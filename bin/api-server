@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+// ----------------------------------------
+// Requires
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const helmet = require('helmet');
+const csurf = require('csurf');
+const winston = require('winston');
+const moment = require('moment');
+
+// ----------------------------------------
+// Configure winston to use a custom logging format
+const logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)({
+            timestamp: function() {
+                return moment().format('YYYY-MM-DD HH:mm:ss');
+            },
+            formatter: function(options) {
+                return '[' + options.timestamp() + ']' +
+                ' ' +
+                options.level.toUpperCase() +
+                ' ' +
+                (options.message ? options.message : '') +
+                (options.meta && Object.keys(options.meta).length ? '\n\t' +
+                JSON.stringify(options.meta) : '' );
+            }
+        })
+    ]
+});
+
+// ----------------------------------------
+// Configure express app
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(compression());
+app.use(helmet());
+app.use(csurf({ cookie: true }));
+
+// ----------------------------------------
+// Configure routes
+const router = express.Router();
+
+// We always log something
+router.use((req, res, next) => {
+    logger.info('Something is happening');
+
+    next();
+});
+
+// Adding the accounts route
+router.route('/accounts')
+    .get((req, res) => {
+        logger.info('Getting account list');
+
+        // Responding with some dummy data
+        res.json([
+            { id: 1, name: 'account1' },
+            { id: 2, name: 'account2' },
+            { id: 3, name: 'account3' }
+        ]);
+    });
+
+// Assigning the accounts route
+app.use('/api', router);
+
+// ----------------------------------------
+// Start express
+const port = process.env.PORT || 9999;
+app.listen(port);
+
+logger.info('Listening on port ' + port);

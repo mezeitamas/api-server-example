@@ -1,0 +1,32 @@
+{
+    "name": "api-server-example",
+    "version": "1.0.0",
+    "description": "This project is a simple example about how to use Node.js, ExpressJs, PM2 and Nginx to implement an API server.",
+    "private": true,
+    "license": "MIT",
+    "author": {
+        "name": "Tamas Mezei",
+        "email": "tamas.mezei@wiredeye.org"
+    },
+    "bin": {
+        "api-server": "./bin/api-server"
+    },
+    "scripts": {
+        "start": "node ./bin/api-server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "body-parser": "1.16.0",
+        "compression": "1.6.2",
+        "cookie-parser": "1.4.3",
+        "csurf": "1.9.0",
+        "express": "4.14.0",
+        "helmet": "3.4.0",
+        "moment": "2.17.1",
+        "winston": "2.3.0"
+    },
+    "engines": {
+        "node": ">= 6.9.1",
+        "npm": ">= 3.10.8"
+    }
+}
