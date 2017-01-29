@@ -1,0 +1,23 @@
+{
+    "apps": [{
+        "name": "api-server-1",
+        "script": "../bin/api-server",
+        "watch": true,
+        "instances": 4,
+        "exec_mode": "cluster",
+        "env": {
+            "PORT": 8888,
+            "NODE_ENV": "development"
+        }
+    }, {
+        "name": "api-server-2",
+        "script": "../bin/api-server",
+        "watch": true,
+        "instances": 4,
+        "exec_mode": "cluster",
+        "env": {
+            "PORT": 9999,
+            "NODE_ENV": "development"
+        }
+    }]
+}
